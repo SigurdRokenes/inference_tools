@@ -24,7 +24,7 @@ class ImageTools:
 
     def convert_bb(self, bbox):
         """
-        Convert bounding box coordinates from (ymin, xmin, ymax, xmax) to absolute form (xmin, ymin, w, h)
+        Convert bounding box coordinates from (ymin, xmin, ymax, xmax) to absolute form (xmin, ymax, w, h)
         for plotting in matplotlib.
         """
         boxes = bbox.copy()
@@ -49,7 +49,7 @@ class ImageTools:
                               patheffects.Normal()])
 
 
-    def img_show(self, ax = None):
+    def img_show(self, ax = None, fname=None):
         """
         Show image
         """
@@ -58,6 +58,7 @@ class ImageTools:
         
         ax.xaxis.tick_top()
         ax.imshow(self.img)
+
         return ax
     
 
@@ -82,20 +83,26 @@ class ImageTools:
             self.draw_outline(text)
     
 
-    def plot_sample(self, ax = None):
+    def plot_sample(self, ax = None, fname=None):
         """
         Plots sample with bounding box and text
         """
         bb = self.convert_bb(self.bbox)
-        ax = self.img_show(ax=ax)
+        ax = self.img_show(ax=ax, fname=fname)
+        
         
         for i in range(len(self.bbox)):
-            if self.bbox is not None:
-                self.draw_box(bb[i], ax)
-            if self.label is not None:
-                self.draw_text(bb[i], ax, txt = str(self.label[i]), disp = self.img.shape[0] * 0.05)
+            self.draw_box(bb[i], ax)
+            self.draw_text(bb[i], ax, txt = str(self.label[i]), disp = self.img.shape[0] * 0.05)
+
         
 
+
+def main():
+    import os
+    path = 'examples/test_im/'
+    for im_path in (os.listdir(path)):
+        print(im_path)
 
 if __name__ == '__main__':
     pass
